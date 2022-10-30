@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+
+  db-scrapy:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_USER: postgres
+  
+  web:
+    depends_on:
+      - db-scrapy 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+     - 8080:5000
+    command: sh -c "cd /sreality/sreality && scrapy crawl flats && flask run"
